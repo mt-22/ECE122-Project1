@@ -11,10 +11,21 @@ def display_menu():
     print("8-Summation; 9-Subtract; 10-Multiply; 11-Divide")
 
 def display_list(list_poly):
+    ''' 
+    Iterate through a list of lists of floats, printing a polynomial expression for each list of floats
+
+    Arguments: list_poly (array)
+    '''
     for i in range(len(list_poly)): # iterate through the indexes of list_poly
         print(f"{i+1}: {get_expression(list_poly[i])}") # print each polynomial, labeling with index+1 to start at 1, rather than 0
 
 def get_expression(arr):
+    '''
+    Generate a polynomail expression given a list of floats
+
+    Arguments: arr (array)
+    Returns: a string containing a polynomial expression
+    '''
     resp = '' 
     for i in range(len(arr)):
         if arr[i] != 0: # check value at index i
@@ -34,6 +45,11 @@ def get_expression(arr):
     # return '+'.join(f"({c})x^{i}" for i,c in enumerate(arr) if c != 0)
 
 def get_polynomial():
+    '''
+    Creates a polynomial of n degree based on user inputted values
+
+    Returns: an array of floats
+    '''
     deg = int(input('Degree of polynomial? '))
     resp = []
     for i in range(deg+1): # ask for deg+1 coefficients, so the degree is equal to the highest power
@@ -43,6 +59,12 @@ def get_polynomial():
     return resp
 
 def info(arr):
+    '''
+    Find the degree of a polynomial stored as a list of floats, and find if the polynomial is even, or odd
+    
+    Arguments: arr (array)
+    Returns: a string contaning information about the degree, and symetry of the polynomial
+    '''
     even, odd, deg = 0, 0, 0 # initilizing variables
     for i in range(len(arr)): 
         if arr[i] != 0: # check value at index i
@@ -54,19 +76,37 @@ def info(arr):
     else: return f"Degree is {deg}"
     
 def evaluate(arr, val):
+    '''
+    Evaluate the polynomial at a given value
+
+    Arguments: arr (array); val (float)
+    Returns: a float containing the value of the polynomail at the given parameter
+    '''
     resp = 0
     for i in range(len(arr)):
-        resp += arr[i]*(val**i) # add the coefficient multiplied by val param to the i power to the total
+        resp += arr[i]*(float(val)**i) # add the coefficient multiplied by val param to the i power to the total
     return resp
     # one liner given the ability to use the sum() method
     #return sum(arr[i]*(val**i) for i in range(len(arr)))
 
 def scale(arr, scale):
+    '''
+    Scales each float within the polynomail by a given factor
+
+    Arguments: arr (array); scale (float)
+    Returns: a list of scaled values within arr
+    '''
     if scale == 0: return [0.0]
-    return [x*scale for x in arr] # multiply every coefficient by the scale param
+    return [x*float(scale) for x in arr] # multiply every coefficient by the scale param
     
 
 def derive(arr):
+    '''
+    Find the derivative of the given function
+
+    Arguments: arr (array)
+    Returns: an array of floats, containing the derivatve of the polynomial within arr
+    '''
     for i in range(len(arr)):
         arr[i] = arr[i]*(i) # multiply the coefficient by the degree of x
         if arr[i] == -0: arr[i] = 0.0 # fix negative zeros
@@ -75,14 +115,26 @@ def derive(arr):
     # return [arr[i]*i for i in range(len(arr))]
 
 def integrate(arr, lb, ub):
+    '''
+    Integrate the given function between an upper, and lower bound
+
+    Arguments: arr (array); lb (float); ub (float)
+    Returns: a float value containing the sum of every coef within arr integrated between lb and ub
+    '''
     tot = 0
     for i in range(len(arr)):
-        tot += (arr[i]/(i+1))*(ub**(i+1))-(arr[i]/(i+1))*(lb**(i+1)) # add the integral of the value at index i
+        tot += (arr[i]/(i+1))*(float(ub)**(i+1))-(arr[i]/(i+1))*(float(lb)**(i+1)) # add the integral of the value at index i
     return tot
     # one liner assuming the sum() method is allowed
     # return sum((arr[i]/(i+1))*(ub**(i+1))-(arr[i]/(i+1))*(lb**(i+1)) for i in range(len(arr)))
 
 def add(p1, p2):
+    '''
+    Add the two given polynomials 
+
+    Arguments: p1 (array); p2 (array)
+    Returns: a singular array, where the ceofs of each degree within p1 and p2 are added together
+    '''
     resp = []
     if len(p1) >= len(p2): # find the list with greater length
         for i in range(len(p1)):
@@ -98,6 +150,12 @@ def add(p1, p2):
     return resp
 
 def subtract(p1, p2):
+    '''
+    Subtract a given polynomail from another given polynomial 
+
+    Arguments: p1 (array); p2 (array)
+    Returns: a singular array, where the ceofs of each degree within p1 are subtracted by the coefs of each degree within p2
+    '''
     resp = []
     if len(p1) >= len(p2): # same method as add() method
         for i in range(len(p1)):
@@ -113,6 +171,12 @@ def subtract(p1, p2):
     return resp
 
 def multiply(p1, p2):
+    '''
+    Multiplies the two given polynomials
+
+    Arguments: p1 (array); p2 (array)
+    Returns: a singular array, where each coef within p1 is multiplied by each coef within p2
+    '''
     resp = [0] * (len(p1) + len(p2) - 1) # initialize empty array with length of expexted result
     for i in range(len(p1)):
         for j in range(len(p2)): # multiply each term in list p1 by every term in p2
